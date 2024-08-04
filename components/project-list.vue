@@ -3,7 +3,7 @@
 
 
     <section v-if="pending">Loading...</section>
-    <section v-if="error">Somethine error...!</section>
+    <section v-else-if="error">Somethine error...!</section>
     <section v-else>
         <ul class="grid grid-cols-1 gap-4">
             <li v-for="repository in repos" :key="repository.id" class="border border-gray-200 rounded-md p-4 hover:bg-gray-100 font-mono">
@@ -22,6 +22,7 @@
 const {error,pending,data} =  await useFetch('https://api.github.com/users/furkanmturgut/repos');
 
 const repos = computed(
-    () => data.value.sort((a,b)=> b.stargazers_count - a.stargazers_count)
+    () => data.value.filter(repo => repo.description)
+    .sort((a,b)=> b.stargazers_count - a.stargazers_count)
 )
 </script>
